@@ -9,6 +9,11 @@ class Pokemon(models.Model):
     image = models.ImageField(
         blank=True,
     )
+    level = models.IntegerField()
+    health = models.IntegerField()
+    strenght = models.IntegerField()
+    defence = models.IntegerField()
+    stamina = models.IntegerField()
     def __str__(self):
         return self.title
     
