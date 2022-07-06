@@ -20,5 +20,7 @@ class PokemonEntity(models.Model):
     )
     lat = models.FloatField()
     lon = models.FloatField()
+    appeared_at = models.DateTimeField()
+    disappeared_at = models.DateTimeField()
     def __str__(self):
         return f'{self.pokemon} находится по координатам: {self.lat}, {self.lon}'
