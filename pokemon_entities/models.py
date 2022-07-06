@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models  # noqa F401
 
 
@@ -13,5 +14,11 @@ class Pokemon(models.Model):
     
     
 class PokemonEntity(models.Model):
+    pokemon = models.ForeignKey(
+        Pokemon,
+        on_delete=models.CASCADE,
+    )
     lat = models.FloatField()
     lon = models.FloatField()
+    def __str__(self):
+        return f'{self.pokemon} находится по координатам: {self.lat}, {self.lon}'
