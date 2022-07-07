@@ -55,16 +55,18 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
+    now = localtime()
     pokemon = Pokemon.objects.get(id=pokemon_id)
     pokemon_entitys = PokemonEntity.objects.filter(pokemon=pokemon)
     
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemon_entitys:
-        add_pokemon(
-            folium_map, pokemon_entity.lat,
-            pokemon_entity.lon,
-            request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
-        )
+        if now > pokemon_entity.appeared_at and pokemon_entity.disappeared_at > now:
+            add_pokemon(
+                folium_map, pokemon_entity.lat,
+                pokemon_entity.lon,
+                request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
+            )
 
     pokemon = {
         'title_ru': pokemon.title,
