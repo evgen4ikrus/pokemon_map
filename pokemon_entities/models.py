@@ -7,8 +7,9 @@ class Pokemon(models.Model):
     title_en = models.CharField(max_length=200)
     title_jp = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(blank=True,)
-    previous_evolution = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
+    image = models.ImageField(
+        blank=True,
+    )
     level = models.IntegerField()
     health = models.IntegerField()
     strenght = models.IntegerField()
