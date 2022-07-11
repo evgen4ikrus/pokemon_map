@@ -1,6 +1,8 @@
 import folium
 from django.shortcuts import render
 from django.utils.timezone import localtime
+from django.urls import reverse
+from pogomap.settings import MEDIA_URL
 
 from .models import Pokemon, PokemonEntity
 
@@ -37,7 +39,7 @@ def show_all_pokemons(request):
         add_pokemon(
             folium_map, pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
+            request.build_absolute_uri(f'{MEDIA_URL}{pokemon_entity.pokemon.image}')
         )
 
     pokemons = Pokemon.objects.all()
@@ -45,7 +47,7 @@ def show_all_pokemons(request):
     for pokemon in pokemons:
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
-            'img_url': request.build_absolute_uri(f'/media/{pokemon.image}'),
+            'img_url': request.build_absolute_uri(f'{MEDIA_URL}{pokemon.image}'),
             'title_ru': pokemon.title,
         })
 
@@ -70,12 +72,12 @@ def show_pokemon(request, pokemon_id):
         add_pokemon(
             folium_map, pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
+            request.build_absolute_uri(f'{MEDIA_URL}{pokemon_entity.pokemon.image}')
         )
 
     pokemon_serialized = {
         'title_ru': pokemon.title,
-        'img_url': request.build_absolute_uri(f'/media/{pokemon.image}'),
+        'img_url': request.build_absolute_uri(f'{MEDIA_URL}{pokemon.image}'),
         'description': pokemon.description,
         'title_en': pokemon.title_en,
         'title_jp': pokemon.title_jp,
@@ -85,14 +87,14 @@ def show_pokemon(request, pokemon_id):
         pokemon_serialized['previous_evolution'] = {
             'title_ru': pokemon_previous_evolution.title,
             'pokemon_id': pokemon_previous_evolution.id,
-            'img_url': request.build_absolute_uri(f'/media/{pokemon_previous_evolution.image}'),
+            'img_url': request.build_absolute_uri(f'{MEDIA_URL}{pokemon_previous_evolution.image}'),
         }
 
     if pokemon_next_evolution:
         pokemon_serialized['next_evolution'] = {
             'title_ru': pokemon_next_evolution.title,
             'pokemon_id': pokemon_next_evolution.id,
-            'img_url': request.build_absolute_uri(f'/media/{pokemon_next_evolution.image}'),
+            'img_url': request.build_absolute_uri(f'{MEDIA_URL}{pokemon_next_evolution.image}'),
         }
 
     return render(request, 'pokemon.html', context={
