@@ -56,7 +56,7 @@ def show_pokemon(request, pokemon_id):
     now = localtime()
     pokemon = Pokemon.objects.get(id=pokemon_id)
     pokemon_entitys = PokemonEntity.objects.filter(pokemon=pokemon)
-    pokemon_next_evolution = pokemon.next_evolution.filter().first()
+    pokemon_next_evolution = pokemon.next_evolutions.filter().first()
     pokemon_previous_evolution = pokemon.previous_evolution
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
