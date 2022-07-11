@@ -73,7 +73,7 @@ def show_pokemon(request, pokemon_id):
             request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
         )
 
-    pokemon = {
+    pokemon_serialized = {
         'title_ru': pokemon.title,
         'img_url': request.build_absolute_uri(f'/media/{pokemon.image}'),
         'description': pokemon.description,
@@ -82,19 +82,19 @@ def show_pokemon(request, pokemon_id):
     }
 
     if pokemon_previous_evolution:
-        pokemon['previous_evolution'] = {
+        pokemon_serialized['previous_evolution'] = {
             'title_ru': pokemon_previous_evolution.title,
             'pokemon_id': pokemon_previous_evolution.id,
             'img_url': request.build_absolute_uri(f'/media/{pokemon_previous_evolution.image}'),
         }
 
     if pokemon_next_evolution:
-        pokemon['next_evolution'] = {
+        pokemon_serialized['next_evolution'] = {
             'title_ru': pokemon_next_evolution.title,
             'pokemon_id': pokemon_next_evolution.id,
             'img_url': request.build_absolute_uri(f'/media/{pokemon_next_evolution.image}'),
         }
 
     return render(request, 'pokemon.html', context={
-        'map': folium_map._repr_html_(), 'pokemon': pokemon
+        'map': folium_map._repr_html_(), 'pokemon': pokemon_serialized
     })
