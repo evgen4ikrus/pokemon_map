@@ -27,12 +27,6 @@ class Pokemon(models.Model):
         verbose_name='Из кого эволюционирует'
         )
 
-    level = models.IntegerField(verbose_name='Уровень', null=True, blank=True)
-    health = models.IntegerField(verbose_name='Здоровье', null=True, blank=True)
-    strenght = models.IntegerField(verbose_name='Атака', null=True, blank=True)
-    defence = models.IntegerField(verbose_name='Защита', null=True, blank=True)
-    stamina = models.IntegerField(verbose_name='Выносливость', null=True, blank=True)
-
     def __str__(self):
         return self.title
 
@@ -55,6 +49,12 @@ class PokemonEntity(models.Model):
         null=True,
         blank=True,
         )
+    
+    level = models.IntegerField(verbose_name='Уровень', null=True, blank=True)
+    health = models.IntegerField(verbose_name='Здоровье', null=True, blank=True)
+    strenght = models.IntegerField(verbose_name='Атака', null=True, blank=True)
+    defence = models.IntegerField(verbose_name='Защита', null=True, blank=True)
+    stamina = models.IntegerField(verbose_name='Выносливость', null=True, blank=True)
 
     def __str__(self):
         return f'{self.pokemon} - координаты: {self.lat}, {self.lon}'
