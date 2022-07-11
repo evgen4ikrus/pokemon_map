@@ -28,15 +28,17 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
 def show_all_pokemons(request):
     now = localtime()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    pokemon_entitys = PokemonEntity.objects.all()
+    pokemon_entitys = PokemonEntity.objects.filter(
+        appeared_at__lte=now,
+        disappeared_at__gte=now,
+        )
     
     for pokemon_entity in pokemon_entitys:
-        if now > pokemon_entity.appeared_at and pokemon_entity.disappeared_at > now:
-            add_pokemon(
-                folium_map, pokemon_entity.lat,
-                pokemon_entity.lon,
-                request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
-            )
+        add_pokemon(
+            folium_map, pokemon_entity.lat,
+            pokemon_entity.lon,
+            request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
+        )
 
     pokemons = Pokemon.objects.all()
     pokemons_on_page = []
@@ -56,18 +58,20 @@ def show_all_pokemons(request):
 def show_pokemon(request, pokemon_id):
     now = localtime()
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    pokemon_entitys = pokemon.pokemon_entitys.all()
+    pokemon_entitys = pokemon.pokemon_entitys.filter(
+        appeared_at__lte=now,
+        disappeared_at__gte=now,
+        )
     pokemon_next_evolution = pokemon.next_evolutions.filter().first()
     pokemon_previous_evolution = pokemon.previous_evolution
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemon_entitys:
-        if now > pokemon_entity.appeared_at and pokemon_entity.disappeared_at > now:
-            add_pokemon(
-                folium_map, pokemon_entity.lat,
-                pokemon_entity.lon,
-                request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
-            )
+        add_pokemon(
+            folium_map, pokemon_entity.lat,
+            pokemon_entity.lon,
+            request.build_absolute_uri(f'/media/{pokemon_entity.pokemon.image}')
+        )
 
     pokemon = {
         'title_ru': pokemon.title,
